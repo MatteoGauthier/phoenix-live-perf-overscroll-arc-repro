@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Phoenix Framework">
+      <%= assigns[:page_title] || "PhoenixElixirReproductionOverscroll" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+    <style>
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .rotating-text {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        font-weight: bold;
+        color: #4a5568;
+      }
+      .rotating {
+        animation: rotate 10s linear infinite;
+      }
+      .control-buttons {
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        z-index: 1000;
+      }
+      .control-button {
+        padding: 10px 20px;
+        margin-left: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4a5568;
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="bg-white antialiased">
+    <div class="control-buttons">
+      <button class="control-button" id="startRotation">Start Rotation</button>
+      <button class="control-button" id="stopRotation">Stop Rotation</button>
+    </div>
+    <div class="rotating-text" id="rotatingText">Rotating Text</div>
+    <%= @inner_content %>
+    <%= for _ <- 1..100 do %>
+      <br>
+    <% end %>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        const rotatingText = document.getElementById('rotatingText');
+        const startButton = document.getElementById('startRotation');
+        const stopButton = document.getElementById('stopRotation');
+
+        startButton.addEventListener('click', () => {
+          rotatingText.classList.add('rotating');
+        });
+
+        stopButton.addEventListener('click', () => {
+          rotatingText.classList.remove('rotating');
+        });
+      });
+    </script>
+  </body>
+</html>
